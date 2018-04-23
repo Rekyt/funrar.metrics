@@ -1,0 +1,82 @@
+---
+title: Functional Rarity Indices are affected by the number and nature of the used
+  traits
+author: "Matthias Grenié"
+date: "23 avril 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The aim to be a brain dump to test a number of hypotheses on the variation of functional rarity indices depending on the nature and number of the traits involved.
+
+ideas:
+
+* Change number of traits and look at the differences of distinctiveness considered
+* Change nature of traits (quantitative continuous, semi-quantitative, nominal)
+* Explore relation between Distinctiveness and Scarcity
+* Importance of weighing the different facets when estimating functional rarity
+* Simulate real trait evolution/correlation and see influences on considered indices
+* Simulations vs. use case to get a grasp of the importances on considering traits
+
+
+## Simulate species trait
+
+```{r simulate_species}
+library("tidyverse")
+
+set.seed(23042018)
+
+n_species = 100  # Number of species to simulate
+
+n_continuous  = 2  # Number of continous trait to simulate
+n_ordered     = 4  # Number of ordered traits
+n_categorical = 1  # Number of categorical traits
+
+species_traits = data.frame(
+    species = paste0("sp_", seq(n_species))
+)
+
+trait_continuous = map(seq(n_continuous) %>%
+                           set_names(nm = paste0("tr_c_", .)),
+                       ~rnorm(n_species)) %>%
+    as.data.frame()
+rownames(trait_continuous) = species_traits$species
+
+trait_ordered = map(seq(n_continuous) %>%
+                           set_names(nm = paste0("tr_o_", .)),
+                    ~sample(1:5, n_species, replace = TRUE)) %>%
+    as.data.frame()
+rownames(trait_ordered) = species_traits$species
+
+trait_categorical = map(seq(n_categorical) %>%
+                            set_names(nm = paste0("tr_cat_", .)),
+                        ~ sample(letters[1:5], n_species, replace = TRUE)) %>%
+    as.data.frame()
+rownames(trait_categorical) = species_traits$species
+
+
+species_traits = cbind(species_traits,
+                       trait_continuous,
+                       trait_ordered,
+                       trait_categorical)
+```
+
+```{r func_dist}
+# Compute functional distnaces
+
+library("ade4")
+
+ktab_list = ktab.list.df(list(trait_continuous,
+                              trait_ordered,
+                              trait_categorical))
+
+ktab_cor = kdist.cor(ktab_list, c("Q", "O", "N"), option = c("scaledBYrange"))
+```
+
+
+
+
+
