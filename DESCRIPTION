@@ -1,7 +1,8 @@
 Package: funrar.metrics
-Title: What the Package Does (one line, title case)
+Title: How Nature of Traits Influences Functional Rarity Metrics
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
+Authors@R: person("Matthias", "Grenié", email = "matthias.grenie@gmail.com",
+         role = c("aut", "cre"), comment = c(ORCID = "0000-0002-4659-7522"))
 Description: What the package does (one paragraph).
 Depends: R (>= 3.4.4)
 License: What license is it under?
@@ -13,3 +14,5 @@ Imports:
     tidyverse
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
+URL: https://github.com/Rekyt/funrar.metrics
+BugReports: https://github.com/Rekyt/funrar.metrics/issues
